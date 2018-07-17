@@ -28,10 +28,12 @@ import java.util.Set;
 import org.neo4j.ogm.annotation.typeconversion.Convert;
 import org.neo4j.ogm.exception.core.MappingException;
 import org.neo4j.ogm.typeconversion.AttributeConverter;
+import org.neo4j.ogm.typeconversion.CompositeAttributeConverter;
 import org.neo4j.ogm.typeconversion.ConversionCallback;
 import org.neo4j.ogm.typeconversion.ConversionCallbackRegistry;
 import org.neo4j.ogm.typeconversion.ConvertibleTypes;
 import org.neo4j.ogm.typeconversion.ProxyAttributeConverter;
+import org.neo4j.ogm.types.point.Point;
 import org.neo4j.ogm.utils.ClassUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -350,6 +352,8 @@ public class DomainInfo {
                 fieldInfo.setPropertyConverter(ConvertibleTypes.getByteArrayBase64Converter());
             } else if (typeDescriptor.contains(BYTE_ARRAY_WRAPPER_SIGNATURE)) {
                 fieldInfo.setPropertyConverter(ConvertibleTypes.getByteArrayWrapperBase64Converter());
+            } else if (isPointType(typeDescriptor)) {
+                setPointConverter(fieldInfo);
             } else {
                 if (fieldInfo.getAnnotations().get(Convert.class) != null) {
                     // no converter's been set but this method is annotated with @Convert so we need to proxy it
@@ -394,6 +398,18 @@ public class DomainInfo {
                 }
             }
         }
+    }
+
+    private boolean isPointType(String typeDescriptor) {
+        final String pointBuilderType = "org.neo4j.ogm.types.point.PointBuilder";
+        final String pointType = "org.neo4j.ogm.types.point.Point";
+        final String wg84PointType = "org.neo4j.ogm.types.point.Wgs84";
+        final String cartesianPointType = "org.neo4j.ogm.types.point.Cartesian";
+
+        return !typeDescriptor.contains(pointBuilderType) &&
+            (typeDescriptor.contains(pointType)
+                || typeDescriptor.contains(wg84PointType)
+                || typeDescriptor.contains(cartesianPointType));
     }
 
     private void setEnumFieldConverter(FieldInfo fieldInfo, Class enumClass) {
@@ -477,6 +493,13 @@ public class DomainInfo {
             ));
         } else {
             fieldInfo.setPropertyConverter(offsetDateTimeConverter);
+        }
+    }
+
+    private void setPointConverter(FieldInfo fieldInfo) {
+        CompositeAttributeConverter<Point> pointConverter = ConvertibleTypes.getPointConverter(fieldInfo.getName());
+        if (!fieldInfo.isIterable() && !fieldInfo.isArray()) {
+            fieldInfo.setCompositeConverter(pointConverter);
         }
     }
 

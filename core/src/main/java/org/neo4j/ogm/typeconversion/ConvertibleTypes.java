@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.neo4j.ogm.annotation.typeconversion.DateString;
+import org.neo4j.ogm.types.point.Point;
 
 /**
  * @author Vince Bickers
@@ -129,5 +130,9 @@ public abstract class ConvertibleTypes {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static CompositeAttributeConverter<Point> getPointConverter(String fieldName) {
+        return new PointConverter(fieldName);
     }
 }
