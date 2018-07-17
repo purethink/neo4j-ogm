@@ -14,7 +14,7 @@ import org.neo4j.ogm.session.SessionFactory;
 import org.neo4j.ogm.testutil.MultiDriverTestClass;
 import org.neo4j.ogm.types.point.CartesianPoint2D;
 import org.neo4j.ogm.types.point.CartesianPoint3D;
-import org.neo4j.ogm.types.point.PointBuilder;
+import org.neo4j.ogm.types.point.Points;
 import org.neo4j.ogm.types.point.Wgs84Point2D;
 import org.neo4j.ogm.types.point.Wgs84Point3D;
 
@@ -40,7 +40,7 @@ public class PointConversionTest extends MultiDriverTestClass {
     @Test
     public void convertSimplePointAsCartesianPoint2D() {
         Place place = new Place("MyPlace");
-        CartesianPoint2D simplePosition = PointBuilder.fromCartesianCoordinates(1d, 2d);
+        CartesianPoint2D simplePosition = Points.fromCartesianCoordinates(1d, 2d);
         place.setSimplePosition(simplePosition);
 
         session.save(place);
@@ -49,6 +49,7 @@ public class PointConversionTest extends MultiDriverTestClass {
         Collection<Place> places = session.loadAll(Place.class);
         place = places.iterator().next();
 
+        assertThat(place.getName()).isEqualTo("MyPlace");
         assertThat(place.getSimplePosition()).isInstanceOf(CartesianPoint2D.class);
 
         CartesianPoint2D cartesianPoint2D = (CartesianPoint2D) place.getSimplePosition();
@@ -58,7 +59,7 @@ public class PointConversionTest extends MultiDriverTestClass {
     @Test
     public void convertCartesianPoint2D() {
         Place place = new Place("MyPlace");
-        CartesianPoint2D cartesianPoint2D = PointBuilder.fromCartesianCoordinates(1d, 2d);
+        CartesianPoint2D cartesianPoint2D = Points.fromCartesianCoordinates(1d, 2d);
         place.setCartesianPoint2D(cartesianPoint2D);
 
         session.save(place);
@@ -66,14 +67,14 @@ public class PointConversionTest extends MultiDriverTestClass {
 
         Collection<Place> places = session.loadAll(Place.class);
         place = places.iterator().next();
-
+        assertThat(place.getName()).isEqualTo("MyPlace");
         assertThat(place.getCartesianPoint2D()).isEqualTo(cartesianPoint2D);
     }
 
     @Test
     public void convertCartesianPoint3D() {
         Place place = new Place("MyPlace");
-        CartesianPoint3D cartesianPoint3D = PointBuilder.fromCartesianCoordinates(1d, 2d, 3d);
+        CartesianPoint3D cartesianPoint3D = Points.fromCartesianCoordinates(1d, 2d, 3d);
         place.setCartesianPoint3D(cartesianPoint3D);
 
         session.save(place);
@@ -81,14 +82,14 @@ public class PointConversionTest extends MultiDriverTestClass {
 
         Collection<Place> places = session.loadAll(Place.class);
         place = places.iterator().next();
-
+        assertThat(place.getName()).isEqualTo("MyPlace");
         assertThat(place.getCartesianPoint3D()).isEqualTo(cartesianPoint3D);
     }
 
     @Test
     public void convertWgsPoint2D() {
         Place place = new Place("MyPlace");
-        Wgs84Point2D wgs84Point2D = PointBuilder.fromPolarCoordinates(1d, 2d);
+        Wgs84Point2D wgs84Point2D = Points.fromPolarCoordinates(1d, 2d);
         place.setWgs84Point2D(wgs84Point2D);
 
         session.save(place);
@@ -96,14 +97,14 @@ public class PointConversionTest extends MultiDriverTestClass {
 
         Collection<Place> places = session.loadAll(Place.class);
         place = places.iterator().next();
-
+        assertThat(place.getName()).isEqualTo("MyPlace");
         assertThat(place.getWgs84Point2D()).isEqualTo(wgs84Point2D);
     }
 
     @Test
     public void convertWgsPoint3D() {
         Place place = new Place("MyPlace");
-        Wgs84Point3D wgs84Point3D = PointBuilder.fromPolarCoordinates(1d, 2d, 3d);
+        Wgs84Point3D wgs84Point3D = Points.fromPolarCoordinates(1d, 2d, 3d);
         place.setWgs84Point3D(wgs84Point3D);
 
         session.save(place);
@@ -111,18 +112,18 @@ public class PointConversionTest extends MultiDriverTestClass {
 
         Collection<Place> places = session.loadAll(Place.class);
         place = places.iterator().next();
-
+        assertThat(place.getName()).isEqualTo("MyPlace");
         assertThat(place.getWgs84Point3D()).isEqualTo(wgs84Point3D);
     }
 
     @Test
     public void convertMultiplePointTypesInOneClass() {
         Place place = new Place("MyPlace");
-        CartesianPoint2D simplePosition = PointBuilder.fromCartesianCoordinates(1d, 2d);
-        CartesianPoint2D cartesianPoint2D = PointBuilder.fromCartesianCoordinates(1d, 2d);
-        CartesianPoint3D cartesianPoint3D = PointBuilder.fromCartesianCoordinates(1d, 2d, 3d);
-        Wgs84Point2D wgs84Point2D = PointBuilder.fromPolarCoordinates(1d, 2d);
-        Wgs84Point3D wgs84Point3D = PointBuilder.fromPolarCoordinates(1d, 2d, 3d);
+        CartesianPoint2D simplePosition = Points.fromCartesianCoordinates(1d, 2d);
+        CartesianPoint2D cartesianPoint2D = Points.fromCartesianCoordinates(1d, 2d);
+        CartesianPoint3D cartesianPoint3D = Points.fromCartesianCoordinates(1d, 2d, 3d);
+        Wgs84Point2D wgs84Point2D = Points.fromPolarCoordinates(1d, 2d);
+        Wgs84Point3D wgs84Point3D = Points.fromPolarCoordinates(1d, 2d, 3d);
 
         place.setSimplePosition(simplePosition);
         place.setCartesianPoint2D(cartesianPoint2D);
@@ -135,7 +136,7 @@ public class PointConversionTest extends MultiDriverTestClass {
 
         Collection<Place> places = session.loadAll(Place.class);
         place = places.iterator().next();
-
+        assertThat(place.getName()).isEqualTo("MyPlace");
         assertThat(place.getSimplePosition()).isEqualTo(simplePosition);
         assertThat(place.getCartesianPoint2D()).isEqualTo(cartesianPoint2D);
         assertThat(place.getCartesianPoint3D()).isEqualTo(cartesianPoint3D);

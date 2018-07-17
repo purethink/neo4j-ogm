@@ -18,32 +18,29 @@ import java.util.Objects;
 
 class CartesianPoint3DImpl implements CartesianPoint3D {
 
-    private final Map<String, Double> properties = new HashMap<>(3);
+    private final double x;
+    private final double y;
+    private final double z;
 
     CartesianPoint3DImpl(double x, double y, double z) {
-        properties.put(X_PROPERTY, x);
-        properties.put(Y_PROPERTY, y);
-        properties.put(Z_PROPERTY, z);
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     @Override
     public double getX() {
-        return properties.get(X_PROPERTY);
+        return x;
     }
 
     @Override
     public double getY() {
-        return properties.get(Y_PROPERTY);
+        return y;
     }
 
     @Override
     public double getZ() {
-        return properties.get(Z_PROPERTY);
-    }
-
-    @Override
-    public Map<String, ?> asProperties() {
-        return properties;
+        return z;
     }
 
     @Override
@@ -53,11 +50,13 @@ class CartesianPoint3DImpl implements CartesianPoint3D {
         if (o == null || getClass() != o.getClass())
             return false;
         CartesianPoint3DImpl that = (CartesianPoint3DImpl) o;
-        return Objects.equals(properties, that.properties);
+        return Double.compare(that.x, x) == 0 &&
+            Double.compare(that.y, y) == 0 &&
+            Double.compare(that.z, z) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(properties);
+        return Objects.hash(x, y, z);
     }
 }

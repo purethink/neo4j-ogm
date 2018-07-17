@@ -13,16 +13,10 @@
 package org.neo4j.ogm.types.point;
 
 public interface CartesianPoint2D extends Point {
-    String X_PROPERTY = "x";
-    String Y_PROPERTY = "y";
 
     double getX();
 
     double getY();
-
-    CartesianPoint2D withX(double x);
-
-    CartesianPoint2D withY(double y);
 
     default SpatialReferenceSystem getSpatialReferenceSystem() {
         return SpatialReferenceSystem.CARTESIAN;

@@ -27,11 +27,16 @@ public enum SpatialReferenceSystem {
         this.srid = srid;
     }
 
-    String getCrs() {
+    public String getCrs() {
         return crs;
     }
 
-    Integer getSrid() {
+    public Integer getSrid() {
         return srid;
+    }
+
+    public boolean matches(Object crs, Object srid) {
+        return getCrs().equals(crs) ||
+            (srid != null && getSrid().equals(Integer.valueOf(srid.toString())));
     }
 }

@@ -12,42 +12,26 @@
  */
 package org.neo4j.ogm.types.point;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 class CartesianPoint2DImpl implements CartesianPoint2D {
 
-    private final Map<String, Double> properties = new HashMap<>(2);
+    private final double x;
+    private final double y;
 
     CartesianPoint2DImpl(double x, double y) {
-        properties.put(X_PROPERTY, x);
-        properties.put(Y_PROPERTY, y);
+        this.x = x;
+        this.y = y;
     }
 
     @Override
     public double getX() {
-        return properties.get(X_PROPERTY);
+        return x;
     }
 
     @Override
     public double getY() {
-        return properties.get(Y_PROPERTY);
-    }
-
-    @Override
-    public CartesianPoint2D withX(double x) {
-        return new CartesianPoint2DImpl(x, properties.get(Y_PROPERTY));
-    }
-
-    @Override
-    public CartesianPoint2D withY(double y) {
-        return new CartesianPoint2DImpl(properties.get(X_PROPERTY), y);
-    }
-
-    @Override
-    public Map<String, ?> asProperties() {
-        return properties;
+        return y;
     }
 
     @Override
@@ -57,11 +41,12 @@ class CartesianPoint2DImpl implements CartesianPoint2D {
         if (o == null || getClass() != o.getClass())
             return false;
         CartesianPoint2DImpl that = (CartesianPoint2DImpl) o;
-        return Objects.equals(properties, that.properties);
+        return Double.compare(that.x, x) == 0 &&
+            Double.compare(that.y, y) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(properties);
+        return Objects.hash(x, y);
     }
 }

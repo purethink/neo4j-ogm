@@ -14,10 +14,6 @@ package org.neo4j.ogm.types.point;
 
 public interface Wgs84Point3D extends Point {
 
-    String LONGITUDE_PROPERTY = "longitude";
-    String LATITUDE_PROPERTY = "latitude";
-    String HEIGHT_PROPERTY = "height";
-
     double getLongitude();
 
     double getLatitude();

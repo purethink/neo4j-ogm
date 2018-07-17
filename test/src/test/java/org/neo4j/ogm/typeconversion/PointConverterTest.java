@@ -25,7 +25,8 @@ import org.neo4j.ogm.metadata.MetaData;
 import org.neo4j.ogm.types.point.CartesianPoint2D;
 import org.neo4j.ogm.types.point.CartesianPoint3D;
 import org.neo4j.ogm.types.point.Point;
-import org.neo4j.ogm.types.point.PointBuilder;
+import org.neo4j.ogm.types.point.Points;
+import org.neo4j.ogm.types.point.SpatialReferenceSystem;
 import org.neo4j.ogm.types.point.Wgs84Point2D;
 import org.neo4j.ogm.types.point.Wgs84Point3D;
 
@@ -52,12 +53,14 @@ public class PointConverterTest {
         CompositeAttributeConverter<Point> converter = classInfo.propertyField(propertyName).getCompositeConverter();
 
         Place place = new Place();
-        CartesianPoint2D simplePosition = PointBuilder.fromCartesianCoordinates(1d, 2d);
+        CartesianPoint2D simplePosition = Points.fromCartesianCoordinates(1d, 2d);
         place.setSimplePosition(simplePosition);
 
-        Map<String, Double> expectedProperties = new HashMap<>();
+        Map<String, ? super Object> expectedProperties = new HashMap<>();
         expectedProperties.put(propertyName + ".x", 1d);
         expectedProperties.put(propertyName + ".y", 2d);
+        expectedProperties.put(propertyName + ".srid", SpatialReferenceSystem.CARTESIAN.getSrid());
+        expectedProperties.put(propertyName + ".crs", SpatialReferenceSystem.CARTESIAN.getCrs());
 
         assertThat(converter.toGraphProperties(place.getSimplePosition())).isEqualTo(expectedProperties);
 
@@ -71,12 +74,14 @@ public class PointConverterTest {
         CompositeAttributeConverter<Point> converter = classInfo.propertyField(propertyName).getCompositeConverter();
 
         Place place = new Place();
-        CartesianPoint2D cartesianPoint2D = PointBuilder.fromCartesianCoordinates(1d, 2d);
+        CartesianPoint2D cartesianPoint2D = Points.fromCartesianCoordinates(1d, 2d);
         place.setCartesianPoint2D(cartesianPoint2D);
 
-        Map<String, Double> expectedProperties = new HashMap<>();
+        Map<String, ? super Object> expectedProperties = new HashMap<>();
         expectedProperties.put(propertyName + ".x", 1d);
         expectedProperties.put(propertyName + ".y", 2d);
+        expectedProperties.put(propertyName + ".srid", SpatialReferenceSystem.CARTESIAN.getSrid());
+        expectedProperties.put(propertyName + ".crs", SpatialReferenceSystem.CARTESIAN.getCrs());
 
         assertThat(converter.toGraphProperties(place.getCartesianPoint2D())).isEqualTo(expectedProperties);
 
@@ -90,13 +95,15 @@ public class PointConverterTest {
         CompositeAttributeConverter<Point> converter = classInfo.propertyField(propertyName).getCompositeConverter();
 
         Place place = new Place();
-        CartesianPoint3D cartesianPoint3D = PointBuilder.fromCartesianCoordinates(1d, 2d, 3d);
+        CartesianPoint3D cartesianPoint3D = Points.fromCartesianCoordinates(1d, 2d, 3d);
         place.setCartesianPoint3D(cartesianPoint3D);
 
-        Map<String, Double> expectedProperties = new HashMap<>();
+        Map<String, ? super Object> expectedProperties = new HashMap<>();
         expectedProperties.put(propertyName + ".x", 1d);
         expectedProperties.put(propertyName + ".y", 2d);
         expectedProperties.put(propertyName + ".z", 3d);
+        expectedProperties.put(propertyName + ".srid", SpatialReferenceSystem.CARTESIAN_3D.getSrid());
+        expectedProperties.put(propertyName + ".crs", SpatialReferenceSystem.CARTESIAN_3D.getCrs());
 
         assertThat(converter.toGraphProperties(place.getCartesianPoint3D())).isEqualTo(expectedProperties);
 
@@ -110,12 +117,14 @@ public class PointConverterTest {
         CompositeAttributeConverter<Point> converter = classInfo.propertyField(propertyName).getCompositeConverter();
 
         Place place = new Place();
-        Wgs84Point2D wgs84Point2D = PointBuilder.fromPolarCoordinates(1d, 2d);
+        Wgs84Point2D wgs84Point2D = Points.fromPolarCoordinates(1d, 2d);
         place.setWgs84Point2D(wgs84Point2D);
 
-        Map<String, Double> expectedProperties = new HashMap<>();
+        Map<String, ? super Object> expectedProperties = new HashMap<>();
         expectedProperties.put(propertyName + ".longitude", 1d);
         expectedProperties.put(propertyName + ".latitude", 2d);
+        expectedProperties.put(propertyName + ".srid", SpatialReferenceSystem.WGS_84.getSrid());
+        expectedProperties.put(propertyName + ".crs", SpatialReferenceSystem.WGS_84.getCrs());
 
         assertThat(converter.toGraphProperties(place.getWgs84Point2D())).isEqualTo(expectedProperties);
 
@@ -129,13 +138,15 @@ public class PointConverterTest {
         CompositeAttributeConverter<Point> converter = classInfo.propertyField(propertyName).getCompositeConverter();
 
         Place place = new Place();
-        Wgs84Point3D wgs84Point3D = PointBuilder.fromPolarCoordinates(1d, 2d, 3d);
+        Wgs84Point3D wgs84Point3D = Points.fromPolarCoordinates(1d, 2d, 3d);
         place.setWgs84Point3D(wgs84Point3D);
 
-        Map<String, Double> expectedProperties = new HashMap<>();
+        Map<String, ? super Object> expectedProperties = new HashMap<>();
         expectedProperties.put(propertyName + ".longitude", 1d);
         expectedProperties.put(propertyName + ".latitude", 2d);
         expectedProperties.put(propertyName + ".height", 3d);
+        expectedProperties.put(propertyName + ".srid", SpatialReferenceSystem.WGS_84_3D.getSrid());
+        expectedProperties.put(propertyName + ".crs", SpatialReferenceSystem.WGS_84_3D.getCrs());
 
         assertThat(converter.toGraphProperties(place.getWgs84Point3D())).isEqualTo(expectedProperties);
 

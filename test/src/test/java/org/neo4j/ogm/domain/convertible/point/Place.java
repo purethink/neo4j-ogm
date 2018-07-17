@@ -74,4 +74,8 @@ public class Place {
     public void setWgs84Point3D(Wgs84Point3D wgs84Point3D) {
         this.wgs84Point3D = wgs84Point3D;
     }
+
+    public String getName() {
+        return name;
+    }
 }

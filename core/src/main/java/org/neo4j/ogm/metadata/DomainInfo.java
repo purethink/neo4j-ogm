@@ -401,12 +401,12 @@ public class DomainInfo {
     }
 
     private boolean isPointType(String typeDescriptor) {
-        final String pointBuilderType = "org.neo4j.ogm.types.point.PointBuilder";
+        final String pointsType = "org.neo4j.ogm.types.point.Points";
         final String pointType = "org.neo4j.ogm.types.point.Point";
         final String wg84PointType = "org.neo4j.ogm.types.point.Wgs84";
         final String cartesianPointType = "org.neo4j.ogm.types.point.Cartesian";
 
-        return !typeDescriptor.contains(pointBuilderType) &&
+        return !typeDescriptor.contains(pointsType) &&
             (typeDescriptor.contains(pointType)
                 || typeDescriptor.contains(wg84PointType)
                 || typeDescriptor.contains(cartesianPointType));

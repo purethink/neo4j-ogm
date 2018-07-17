@@ -12,9 +12,15 @@
  */
 package org.neo4j.ogm.types.point;
 
-import java.util.Map;
-
 public interface Point {
+    String X_PROPERTY = "x";
+    String Y_PROPERTY = "y";
+    String Z_PROPERTY = "z";
+    String LONGITUDE_PROPERTY = "longitude";
+    String LATITUDE_PROPERTY = "latitude";
+    String HEIGHT_PROPERTY = "height";
+    String SRID_PROPERTY = "srid";
+    String CRS_PROPERTY = "crs";
 
     default String getCoordinateReferenceSystem() {
         return getSpatialReferenceSystem().getCrs();
@@ -25,7 +31,5 @@ public interface Point {
     }
 
     SpatialReferenceSystem getSpatialReferenceSystem();
-
-    Map<String, ?> asProperties();
 
 }

@@ -14,10 +14,6 @@ package org.neo4j.ogm.types.point;
 
 public interface CartesianPoint3D extends Point {
 
-    String X_PROPERTY = "x";
-    String Y_PROPERTY = "y";
-    String Z_PROPERTY = "z";
-
     double getX();
 
     double getY();

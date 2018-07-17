@@ -12,38 +12,33 @@
  */
 package org.neo4j.ogm.types.point;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 class Wgs84Point3DImpl implements Wgs84Point3D {
 
-    private final Map<String, Double> properties = new HashMap<>(3);
+    private final double longitude;
+    private final double latitude;
+    private final double height;
 
     Wgs84Point3DImpl(double longitude, double latitude, double height) {
-        properties.put(LONGITUDE_PROPERTY, longitude);
-        properties.put(LATITUDE_PROPERTY, latitude);
-        properties.put(HEIGHT_PROPERTY, height);
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.height = height;
     }
 
     @Override
     public double getLongitude() {
-        return properties.get(LONGITUDE_PROPERTY);
+        return longitude;
     }
 
     @Override
     public double getLatitude() {
-        return properties.get(LATITUDE_PROPERTY);
+        return latitude;
     }
 
     @Override
     public double getHeight() {
-        return properties.get(HEIGHT_PROPERTY);
-    }
-
-    @Override
-    public Map<String, ?> asProperties() {
-        return properties;
+        return height;
     }
 
     @Override
@@ -53,11 +48,13 @@ class Wgs84Point3DImpl implements Wgs84Point3D {
         if (o == null || getClass() != o.getClass())
             return false;
         Wgs84Point3DImpl that = (Wgs84Point3DImpl) o;
-        return Objects.equals(properties, that.properties);
+        return Double.compare(that.longitude, longitude) == 0 &&
+            Double.compare(that.latitude, latitude) == 0 &&
+            Double.compare(that.height, height) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(properties);
+        return Objects.hash(longitude, latitude, height);
     }
 }

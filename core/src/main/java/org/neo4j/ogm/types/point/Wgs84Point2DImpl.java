@@ -12,32 +12,26 @@
  */
 package org.neo4j.ogm.types.point;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 class Wgs84Point2DImpl implements Wgs84Point2D {
 
-    private final Map<String, Double> properties = new HashMap<>(2);
+    private final double longitude;
+    private final double latitude;
 
     Wgs84Point2DImpl(double longitude, double latitude) {
-        properties.put(LONGITUDE_PROPERTY, longitude);
-        properties.put(LATITUDE_PROPERTY, latitude);
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     @Override
     public double getLongitude() {
-        return properties.get(LONGITUDE_PROPERTY);
+        return longitude;
     }
 
     @Override
     public double getLatitude() {
-        return properties.get(LATITUDE_PROPERTY);
-    }
-
-    @Override
-    public Map<String, ?> asProperties() {
-        return properties;
+        return latitude;
     }
 
     @Override
@@ -47,11 +41,12 @@ class Wgs84Point2DImpl implements Wgs84Point2D {
         if (o == null || getClass() != o.getClass())
             return false;
         Wgs84Point2DImpl that = (Wgs84Point2DImpl) o;
-        return Objects.equals(properties, that.properties);
+        return Double.compare(that.longitude, longitude) == 0 &&
+            Double.compare(that.latitude, latitude) == 0;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(properties);
+        return Objects.hash(longitude, latitude);
     }
 }
