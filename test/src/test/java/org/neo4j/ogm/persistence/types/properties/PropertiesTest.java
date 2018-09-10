@@ -35,6 +35,7 @@ import org.neo4j.ogm.testutil.MultiDriverTestClass;
 
 /**
  * @author Frantisek Hartman
+ * @author Michael J. Simons
  */
 public class PropertiesTest extends MultiDriverTestClass {
 
@@ -269,5 +270,40 @@ public class PropertiesTest extends MultiDriverTestClass {
 
         User loaded = session.load(User.class, user.getId());
         assertThat(loaded.getMyProperties()).isEqualTo(loaded.getMyProperties());
+    }
+
+    @Test // GH-GH-518
+    public void shouldBeAbleToDeletePropertiesAgain() {
+        User user = new User();
+
+        user.putMyProperty("prop1", "A property");
+        user.putMyProperty("prop2", "Another property");
+
+        user.putIntegerProperty("anInt", 1);
+        user.putIntegerProperty("anotherInt", 2);
+
+        user.putDelimiterProperty("a", "b");
+
+        session.save(user);
+        session.clear();
+
+        User loaded = session.load(User.class, user.getId());
+        assertThat(loaded.getMyProperties()).containsKeys("prop1", "prop2");
+        assertThat(loaded.getIntegerProperties()).hasSize(2);
+        assertThat(loaded.getDelimiterProperties()).hasSize(1);
+        assertThat(loaded.getPrefixedProperties()).isEmpty();
+
+        loaded.getMyProperties().remove("prop1");
+        loaded.getIntegerProperties().clear();
+        loaded.setDelimiterProperties(null);
+
+        session.save(loaded);
+        session.clear();
+
+        loaded = session.load(User.class, user.getId());
+        assertThat(loaded.getMyProperties()).containsKeys("prop2");
+        assertThat(loaded.getIntegerProperties()).isEmpty();
+        assertThat(loaded.getDelimiterProperties()).isEmpty();
+        assertThat(loaded.getPrefixedProperties()).isEmpty();
     }
 }
